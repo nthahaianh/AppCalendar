@@ -2,26 +2,28 @@ package com.example.calendarapplication
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
+import androidx.lifecycle.Lifecycle
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import java.util.*
 
 class ViewPagerAdapter(
-    fm: FragmentManager
+    var fm: FragmentManager,
+    lifecycle: Lifecycle
 ) :
-    FragmentPagerAdapter(fm) {
-    private val mFragmentManager: FragmentManager? = fm
+    FragmentStateAdapter(fm, lifecycle) {
     var listFragment: MutableList<Fragment1> = mutableListOf()
-    override fun getItem(position: Int): Fragment {
-        return listFragment[position]
+
+    override fun getItemCount(): Int {
+        return listFragment.size
     }
 
-    override fun getCount(): Int {
-        return listFragment.size
+    override fun createFragment(position: Int): Fragment {
+        return listFragment[position]
     }
 
     fun setLists(list: MutableList<Fragment1>) {
         if (listFragment != null) for (i in 0 until listFragment.size) {
-            mFragmentManager?.beginTransaction()?.remove(listFragment[i])
+            fm.beginTransaction().remove(listFragment[i])
         }
         listFragment = list
     }

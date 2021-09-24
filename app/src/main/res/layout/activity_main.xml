@@ -49,7 +49,7 @@
             android:background="@color/green1" />
     </LinearLayout>
 
-    <androidx.viewpager.widget.ViewPager
+    <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewpager_demo"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

@@ -10,8 +10,9 @@
         android:id="@+id/item_title_tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
         android:padding="5dp"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:text="MON"
         android:textColor="#272727" />
 </LinearLayout>

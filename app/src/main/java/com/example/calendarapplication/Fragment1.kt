@@ -1,5 +1,8 @@
 package com.example.calendarapplication
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -49,7 +52,6 @@ class Fragment1 : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         view1 = view
         recyclerView = rv_calendar
         addData(view)
@@ -68,39 +70,21 @@ class Fragment1 : Fragment() {
             calendar.add(Calendar.DAY_OF_YEAR, -(7 * weekInMonth + (dayOfWeek - startWeek)))
 
         for (i in 0..41) {
-            dayList.add(MyDate(calendar.get(Calendar.DATE), calendar.get(Calendar.MONTH), false))
+            dayList.add(MyDate(calendar.get(Calendar.YEAR),calendar.get(Calendar.DATE), calendar.get(Calendar.MONTH)))
             calendar.add(Calendar.DAY_OF_YEAR, 1)
         }
     }
 
+    @SuppressLint("UseRequireInsteadOfGet")
     private fun setCalendarView(view: View) {
-        val calendarAdapter = CalendarAdapter(dayList, month)
+        var sharedPreferences: SharedPreferences = context!!.getSharedPreferences("SharePreferences",Context.MODE_PRIVATE)
+        val calendarAdapter = CalendarAdapter(dayList, month,sharedPreferences)
         val calendarLayoutManager: RecyclerView.LayoutManager = GridLayoutManager(
             context,
             7
         )
         rv_calendar.adapter = calendarAdapter
         rv_calendar.layoutManager = calendarLayoutManager
-
-        calendarAdapter.setCallBack {
-            for (i in dayList)
-                i.select = false
-            try {
-                dayList[it].select = true
-            } catch (exception: Exception) {
-            }
-            calendarAdapter.notifyDataSetChanged()
-        }
-
-        calendarAdapter.setCallBack2 {
-            for (i in dayList)
-                i.select = false
-            try {
-                dayList[it].select = true
-            } catch (exception: Exception) {
-            }
-            calendarAdapter.notifyDataSetChanged()
-        }
     }
 
     fun updateCalendar(startWeek: Int,month: Int,year: Int) {
